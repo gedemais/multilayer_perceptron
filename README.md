@@ -4,6 +4,4 @@
 
 - [x] Diviser le dataset en deux pour l'entrainement et l'evaluation.
 
-- [ ] Data-visualisation du dataset
-
-- [ ] Creer une classe de generation de reseaux de neurones modulaires (branch).
+- [ ] Creer une classe de generation de reseaux de neurones modulaires.

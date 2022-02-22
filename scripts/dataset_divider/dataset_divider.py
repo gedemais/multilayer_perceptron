@@ -51,6 +51,8 @@ def main(argv):
     # Dataset division
     df_training, df_evaluation = divide(df)
 
+    print(df_training.isna().sum())
+
     # Exports training and evaluation datasets to csv
     df_training.to_csv('training_dataset.csv')
     df_evaluation.to_csv('evaluation_dataset.csv')
