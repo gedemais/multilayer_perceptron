@@ -46,11 +46,14 @@ class   MLP():
             Applies activation function on each neuron in the i layer.
         """
         activation_functions =  {
-                                    "softmax": softmax
+                                    "softmax": softmax,
+                                    "sigmoid": sigmoid,
+                                    "relu": ReLU
                                 }
 
+        function = activation_functions[self.activations[i].lower()]
         for j, f in enumerate(self.layers[i]):
-            self.layers[i][j] = activation_functions[self.activations[i]](f)
+            self.layers[i][j] = function(f)
 
 
     def feedforward(self, input_data):
@@ -68,7 +71,8 @@ class   MLP():
 
         # Layers execution loop
         for i in range(self.nb_layers - 1):
-            activate_layer(i)
+            if i > 0:
+                self.activate_layer(i)
             for j in range(self.layers_sizes[i + 1]):
 
                 # Compute weighted sum over all inputs
@@ -81,3 +85,6 @@ class   MLP():
 
                 # Place weighted sum in the next layer's corresponding neuron
                 self.layers[i + 1][j] = w_sum
+
+        # Activate output layer
+        return softmax(self.layers[self.nb_layers - 1])
