@@ -2,7 +2,7 @@
 
 <h3> Tasks </h3>
 
-- [ ] Diviser le dataset en deux pour l'entrainement et l'evaluation.
+- [x] Diviser le dataset en deux pour l'entrainement et l'evaluation.
 
 - [ ] Data-visualisation du dataset
 
