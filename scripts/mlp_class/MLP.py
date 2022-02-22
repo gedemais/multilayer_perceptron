@@ -1,4 +1,5 @@
 import numpy as np
+from activations import *
 
 class   MLP():
 
@@ -38,3 +39,45 @@ class   MLP():
         self.biases_weights = []
         for i in range(self.nb_layers - 1):
             self.biases_weights.append(np.random.rand(self.layers_sizes[i + 1]))
+
+
+    def activate_layer(self, i):
+        """
+            Applies activation function on each neuron in the i layer.
+        """
+        activation_functions =  {
+                                    "softmax": softmax
+                                }
+
+        for j, f in enumerate(self.layers[i]):
+            self.layers[i][j] = activation_functions[self.activations[i]](f)
+
+
+    def feedforward(self, input_data):
+        """
+        FeedForwards the created model with provided input data.
+        Parameters:
+            - input_data : array, containing input layer data.
+        """
+        # To be replaced with error message
+        assert(len(input_data) == self.layers_sizes[0])
+
+        # Load input data into the input layer
+        for i in range(self.layers_sizes[0]):
+            self.layers[0][i] = input_data[i]
+
+        # Layers execution loop
+        for i in range(self.nb_layers - 1):
+            activate_layer(i)
+            for j in range(self.layers_sizes[i + 1]):
+
+                # Compute weighted sum over all inputs
+                w_sum = 0.0
+                for k in range(self.layers_sizes[i]):
+                    w_sum += self.layers[i][k] * self.weights[i][k][j]
+
+                # Add bias weight
+                w_sum += self.biases_weights[i][j]
+
+                # Place weighted sum in the next layer's corresponding neuron
+                self.layers[i + 1][j] = w_sum

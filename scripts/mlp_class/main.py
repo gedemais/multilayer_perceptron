@@ -1,6 +1,6 @@
 from MLP import MLP
 
-mlp = MLP(4, [30, 16, 8, 2], ['softmax', 'softmax', 'softmax', 'softmax'])
+mlp = MLP(2, [4, 2], ['softmax', 'softmax'])
 
 print(mlp.nb_layers)
 print('-' * 80)
