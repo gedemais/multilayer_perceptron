@@ -1,5 +1,7 @@
 from MLP import MLP
+from sys import argv, stderr
 import numpy as np
+import pandas as pd
 
 mlp = MLP(4, [30, 15, 8, 2], [None, 'sigmoid', 'sigmoid', None]) # explain nones
 
@@ -15,10 +17,15 @@ mlp = MLP(4, [30, 15, 8, 2], [None, 'sigmoid', 'sigmoid', None]) # explain nones
 #print('-' * 80)
 #print(mlp.biases_weights)
 
-input_data = np.random.rand(30)
 
-print("input_data = {}".format(input_data))
+def main():
 
-output = mlp.feedforward(input_data)
+    assert(len(argv) == 2)
 
-print("output = {}".format(output))
+    df = pd.read_csv(argv[1])
+
+    mlp.backpropagation(df)
+
+
+if __name__ == "__main__":
+    main()

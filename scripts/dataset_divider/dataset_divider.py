@@ -12,7 +12,7 @@ def divide(df):
     with a ratio of 80% data reserved for training, and 20% remaining for test.
     """
     # Separate rows by diagnosis
-    group = df.groupby(df['M'])
+    group = df.groupby(df['Diagnosis'])
     benins = group.get_group('B')
     malins = group.get_group('M')
 
@@ -50,8 +50,6 @@ def main(argv):
 
     # Dataset division
     df_training, df_evaluation = divide(df)
-
-    print(df_training.isna().sum())
 
     # Exports training and evaluation datasets to csv
     df_training.to_csv('training_dataset.csv')

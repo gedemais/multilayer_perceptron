@@ -88,3 +88,15 @@ class   MLP():
 
         # Activate output layer
         return softmax(self.layers[self.nb_layers - 1])
+
+
+    def backpropagation(self, df, learning_rate=0.01, max_epoch=1000000):
+        data = df.to_numpy()
+        for row in data:
+            row = (row[2], row[3:])
+            print(row)
+
+
+
+
+
