@@ -10,20 +10,19 @@ def divide(df):
     with a ratio of 80% data reserved for training, and 20% remaining for test.
     """
     group = df.groupby(df['M'])
-    malins = group.get_group('M')
     benins = group.get_group('B')
+    malins = group.get_group('M')
 
-    #print(malins)
-    #print(benins)
     training_part = 0.8
 
     b_training_features = int(len(benins) * training_part)
     m_training_features = int(len(malins) * training_part)
 
-    df_training = pd.concat([benins.iloc[0:b_training_features], malins.iloc[0:m_training_features]], axis=1)
-    df_evaluate = pd.concat([benins.iloc[b_training_features:], benins.iloc[m_training_features:]], axis=1)
-    print(df_training)
-    return df_training, df_evaluate
+    df_training = pd.concat([benins.iloc[0:b_training_features], malins.iloc[0:m_training_features]])
+    df_evaluate = pd.concat([benins.iloc[b_training_features:], malins.iloc[m_training_features:]])
+
+    return df_training.sample(frac=1), df_evaluate.sample(frac=1)
+
 
 def main(argv):
     # Parameters check
@@ -39,9 +38,10 @@ def main(argv):
         print("CSV parsing failed. Abort.")
         exit(1)
 
-    #print(df)
-    #print('-' * 80)
     df_training, df_evaluate = divide(df)
+
+    df_training.to_csv('training_dataset.csv')
+    df_evaluate.to_csv('evaluate_dataset.csv')
 
 
 if __name__ == "__main__":
