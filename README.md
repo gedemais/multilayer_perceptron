@@ -2,6 +2,10 @@
 
 <h3> Tasks </h3>
 
+- [ ] Debug le feedforward
+
+- [ ] Normaliser les datasets
+
 - [ ] Implementer la backpropagation dans la classe MLP
 
 - [ ] Tester la backpropagation avec la fonction d'erreur d'entropie croisee binaire

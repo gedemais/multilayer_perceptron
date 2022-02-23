@@ -1,4 +1,5 @@
 import numpy as np
+import math
 from activations import *
 
 class   MLP():
@@ -56,6 +57,11 @@ class   MLP():
             self.layers[i][j] = function(f)
 
 
+    def print_layers(self):
+        for layer in self.layers:
+            print(layer)
+
+
     def feedforward(self, input_data):
         """
         FeedForwards the created model with provided input data.
@@ -71,6 +77,10 @@ class   MLP():
 
         # Layers execution loop
         for i in range(self.nb_layers - 1):
+            print('*' * 80)
+            print(self.layers[i])
+            print(self.layers[i + 1])
+            print('-' * 80)
             if i > 0:
                 self.activate_layer(i)
             for j in range(self.layers_sizes[i + 1]):
@@ -78,6 +88,7 @@ class   MLP():
                 # Compute weighted sum over all inputs
                 w_sum = 0.0
                 for k in range(self.layers_sizes[i]):
+                    print("w_sum += {0} * {1}".format(self.layers[i][k], self.weights[i][k][j]))
                     w_sum += self.layers[i][k] * self.weights[i][k][j]
 
                 # Add bias weight
@@ -85,16 +96,46 @@ class   MLP():
 
                 # Place weighted sum in the next layer's corresponding neuron
                 self.layers[i + 1][j] = w_sum
+            print(self.layers[i])
+            print(self.layers[i + 1])
 
         # Activate output layer
         return softmax(self.layers[self.nb_layers - 1])
 
 
-    def backpropagation(self, df, learning_rate=0.01, max_epoch=1000000):
-        data = df.to_numpy()
-        for row in data:
-            row = (row[2], row[3:])
-            print(row)
+#    def compute_cost(self, output_target):
+#        """
+#            This function computes the model's cost by summing up error on
+#            each neuron in respect with output_target.
+#        """
+#        cost = 0.0
+#        output = self.nb_layers - 1
+#        length = self.layers_sizes[self.nb_layers - 1]
+#
+#        for i in range(length):
+#            cost += math.pow(self.layers[output][i] - output_target[i], 2)
+#        return cost
+#
+#
+#    def gradient_descent(self, diagnosis, input_data):
+#
+#        output_target = [1.0, 0.0] if diagnosis == "M" else [0.0, 1.0]
+#
+#        print(input_data)
+#        self.feedforward(input_data)
+#        print(self.layers[self.nb_layers - 1])
+#        exit(0)
+#        cost = self.compute_cost(output_target)
+#
+#
+#    def backpropagation(self, df, learning_rate=0.01, max_epoch=1000000):
+#        data = df.to_numpy()
+#        epoch = 0
+#        #while epoch < max_epoch:
+#            # Collect required bias / weights changes for each element in
+#            # the dataset, and compute the total cost of the model.
+#        for row in data:
+#            self.gradient_descent(row[2], row[3:])
 
 
 
