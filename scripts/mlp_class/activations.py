@@ -1,11 +1,10 @@
 import numpy as np
 from math import exp
 
-def softmax(x):
-
-    y = np.exp(x - np.max(x))
-    f_x = y / np.sum(np.exp(x))
-    return f_x
+def softmax(numbers):
+    exponentials = np.exp(numbers)
+    sum_exponentials = sum(exponentials)
+    return exponentials/sum_exponentials
 
 #def dsoftmax(x)
 

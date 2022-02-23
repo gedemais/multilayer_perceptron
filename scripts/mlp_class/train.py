@@ -3,6 +3,7 @@ from sys import argv, stderr
 import numpy as np
 import pandas as pd
 
+mlp = MLP(4, [30, 15, 8, 2], [None, 'sigmoid', 'sigmoid', None]) # explain nones
 
 #print(mlp.nb_layers)
 #print('-' * 80)
@@ -23,12 +24,7 @@ def main():
 
     df = pd.read_csv(argv[1])
 
-    mlp = MLP(3, [4, 3, 2], [None, 'sigmoid', None]) # explain nones
-
-    input_data = [0.45, 0.12, 0.87, 0.61]
-    input_data = [0.61, 0.87, 0.12, 0.45]
-    output = mlp.feedforward(input_data)
-    print(output)
+    mlp.backpropagation(df)
 
 
 if __name__ == "__main__":

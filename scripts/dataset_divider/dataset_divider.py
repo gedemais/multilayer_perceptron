@@ -34,6 +34,19 @@ def divide(df):
     return df_training.sample(frac=1), df_evaluation.sample(frac=1)
 
 
+def normalize(df):
+    result = df.copy()
+    for feature_name in df.columns:
+
+        if feature_name == "Diagnosis":
+            continue
+
+        max_value = df[feature_name].max()
+        min_value = df[feature_name].min()
+        result[feature_name] = (df[feature_name] - min_value) / (max_value - min_value)
+    return result
+
+
 def main(argv):
     # Parameters check
     if len(argv) != 2:
@@ -43,7 +56,7 @@ def main(argv):
     # CSV dataset parsing
     try:
         df = pd.read_csv(argv[1])
-        #df = df.drop(["Index", "First Name", "Last Name", "Birthday", "Best Hand"], 1)
+        df = normalize(df)
     except:
         print("CSV parsing failed. Abort.")
         exit(1)
