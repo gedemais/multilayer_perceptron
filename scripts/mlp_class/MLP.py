@@ -77,12 +77,12 @@ class   MLP():
 
         # Layers execution loop
         for i in range(self.nb_layers - 1):
+            if i > 0:
+                self.activate_layer(i)
             print('*' * 80)
             print(self.layers[i])
             print(self.layers[i + 1])
             print('-' * 80)
-            if i > 0:
-                self.activate_layer(i)
             for j in range(self.layers_sizes[i + 1]):
 
                 # Compute weighted sum over all inputs
