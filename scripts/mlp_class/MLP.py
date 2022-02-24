@@ -114,15 +114,15 @@ class   MLP():
         for index, matrix in enumerate(self.changes):
             for x, column in enumerate(matrix):
                 for y, elem in enumerate(column):
-                    nudge = self.changes[index][x][y] * self.learning_rate
+                    nudge = self.changes[index][x][y] / self.nb_rows * self.learning_rate
                     self.weights[index][x][y] -= nudge
 
 
-    def compute_gradient(self, layer, i, j, output_target):
+    def compute_gradient(self, layer, i, j):
         a = self.layers[layer][i]
         dzw = self.layers[layer - 1][j]
         daz = a * (1.0 - a);
-        dca = 2.0 * (a - output_target[i]);
+        dca = 2.0 * (a - self.target[i]);
         pre_ret = dzw * daz;
         if layer > 1:
             self.back_target[i] += (pre_ret * self.weights[layer - 1][j][i])
@@ -133,26 +133,23 @@ class   MLP():
         layer_size = self.layers_sizes[layer]
 
         if layer == self.nb_layers - 1:
-            return [1.0, 0.0] if diagnosis == "M" else [0.0, 1.0]
-
-        target = np.zeros(layer_size)
-        for i in range(layer_size):
-            target[i] -= self.back_target[i] / layer_size
-
-        return target
+            self.target = np.zeros(max(self.layers_sizes[1:len(self.layers_sizes) - 1]))
+            self.target[(0 if diagnosis == 'M' else 1)] = 1.0
+        else:
+            for i in range(layer_size):
+                self.target[i] -= self.back_target[i] / layer_size
 
 
     def average_changes(self, diagnosis):
         layer = self.nb_layers - 1
 
         while layer > 0:
-            target = self.make_target(layer, diagnosis)
+            self.make_target(layer, diagnosis)
             self.back_target = np.zeros(self.layers_sizes[layer - 1])
             for i in range(self.layers_sizes[layer]):
                 for j in range(self.layers_sizes[layer - 1]):
-                    self.changes[layer - 1][j][i] += self.compute_gradient(layer, i, j, target)
+                    self.changes[layer - 1][j][i] += self.compute_gradient(layer, i, j)
             layer -= 1
-
 
     def gradient_descent(self, diagnosis, input_data):
 
@@ -167,6 +164,7 @@ class   MLP():
         data = df.to_numpy()
         epoch = 0
         self.learning_rate = learning_rate
+        self.nb_rows = len(df)
         while epoch < max_epoch:
             total_cost = 0
             self.changes = []
@@ -174,10 +172,9 @@ class   MLP():
                 matrix = np.zeros((self.layers_sizes[i], self.layers_sizes[i + 1]))
                 self.changes.append(matrix)
 
+            prev_cost = total_cost
             for row in data:
                 total_cost += self.gradient_descent(row[2], row[3:])
-
-            print(total_cost)
 
             self.apply_changes()
             epoch += 1

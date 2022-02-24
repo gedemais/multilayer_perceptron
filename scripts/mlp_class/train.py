@@ -25,7 +25,8 @@ def main():
 
     df = pd.read_csv(argv[1])
 
-    mlp.backpropagation(df, learning_rate=0.0001, max_epoch=1000000)
+    mlp.backpropagation(df, learning_rate=-0.0001, max_epoch=1000000)
+
 
 
 if __name__ == "__main__":
