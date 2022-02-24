@@ -46,7 +46,6 @@ class   MLP():
             Applies activation function on each neuron in the i layer.
         """
         activation_functions =  {
-                                    "softmax": softmax,
                                     "sigmoid": sigmoid,
                                     "relu": ReLU
                                 }
@@ -120,10 +119,22 @@ class   MLP():
 
 
     def compute_gradient(self, layer, i, j):
+
+        derivatives =   {
+                            "softmax": dsoftmax,
+                            "sigmoid": dsigmoid,
+                            "relu": dReLU
+                        }
+
         a = self.layers[layer][i]
         dzw = self.layers[layer - 1][j]
-        daz = a * (1.0 - a);
-        dca = 2.0 * (a - self.target[i]);
+
+        if self.activations[layer] == "softmax":
+            daz = derivatives[self.activations[layer]](self.layers[layer])[i]
+        else:
+            daz = derivatives[self.activations[layer]](a)
+
+        dca = 2.0 * (a - self.target[i])
         pre_ret = dzw * daz;
         if layer > 1:
             self.back_target[i] += (pre_ret * self.weights[layer - 1][j][i])
@@ -163,11 +174,15 @@ class   MLP():
 
 
     def backpropagation(self, df, learning_rate=0.01, max_epoch=1000000):
+
         data = df.to_numpy()
-        epoch = 0
+        self.cost_data = []
         self.learning_rate = learning_rate
         self.nb_rows = len(df)
+
+        put = "epoch {0}/{1} - loss: {2} - val_loss: {3}"
         total_cost = 0
+        epoch = 0
         while epoch < max_epoch:
             self.changes = []
             for i in range(self.nb_layers - 1):
@@ -179,12 +194,8 @@ class   MLP():
             for row in data:
                 total_cost += self.gradient_descent(row[2], row[3:])
 
-            print("epoch {0}/{1} - loss: {2} - val_loss: {3}".format(epoch,
-                                                                    max_epoch,
-                                                                    total_cost,
-                                                                    prev_cost - total_cost))
+            print(put.format(epoch, max_epoch, total_cost, prev_cost - total_cost))
+            self.cost_data.append(total_cost)
+
             self.apply_changes()
             epoch += 1
-
-
-
