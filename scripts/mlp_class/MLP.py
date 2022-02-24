@@ -148,7 +148,7 @@ class   MLP():
             self.back_target = np.zeros(self.layers_sizes[layer - 1])
             for i in range(self.layers_sizes[layer]):
                 for j in range(self.layers_sizes[layer - 1]):
-                    self.changes[layer - 1][j][i] += self.compute_gradient(layer, i, j)
+                    self.changes[layer - 1][j][i] -= self.compute_gradient(layer, i, j)
             layer -= 1
 
     def gradient_descent(self, diagnosis, input_data):
@@ -165,17 +165,22 @@ class   MLP():
         epoch = 0
         self.learning_rate = learning_rate
         self.nb_rows = len(df)
+        total_cost = 0
         while epoch < max_epoch:
-            total_cost = 0
             self.changes = []
             for i in range(self.nb_layers - 1):
                 matrix = np.zeros((self.layers_sizes[i], self.layers_sizes[i + 1]))
                 self.changes.append(matrix)
 
             prev_cost = total_cost
+            total_cost = 0
             for row in data:
                 total_cost += self.gradient_descent(row[2], row[3:])
 
+            print("epoch {0}/{1} - loss: {2} - val_loss: {3}".format(epoch,
+                                                                    max_epoch,
+                                                                    total_cost,
+                                                                    prev_cost - total_cost))
             self.apply_changes()
             epoch += 1
 
