@@ -4,11 +4,11 @@
 
 - [ ] Implementer et linker les differentes derivees dans le calcul du gradient
 
-- [ ] Data-visu le bruteforce des hypers parametres pour la phase d'apprentissage
-
 - [ ] Exporter les poids une fois l'entrainement fini
 
 - [ ] Implementer le script de prediction
+
+- [ ] Data-visu le bruteforce des hypers parametres pour la phase d'apprentissage
 
 
 <h3>Done</h3>
