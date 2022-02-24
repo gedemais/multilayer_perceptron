@@ -56,11 +56,6 @@ class   MLP():
             self.layers[i][j] = function(f)
 
 
-    def print_layers(self):
-        for layer in self.layers:
-            print(layer)
-
-
     def feedforward(self, input_data):
         """
         FeedForwards the created model with provided input data.
@@ -92,22 +87,28 @@ class   MLP():
                 self.layers[i + 1][j] = w_sum
 
         # Activate output layer
-        return softmax(self.layers[self.nb_layers - 1])
+        output = self.nb_layers - 1
+        self.layers[output] = softmax(self.layers[output])
 
 
-    def compute_cost(self, diagnosis):
+    def compute_loss(self, diagnosis):
         """
             This function computes the model's cost by summing up error on
-            each neuron in respect with output_target.
+            each neuron in respect with output_target, using the cross entropy
+            error formulae specified in 42's subject.
         """
         output_target = [1.0, 0.0] if diagnosis == 'M' else [0.0, 1.0]
-        cost = 0.0
-        output = self.nb_layers - 1
-        length = self.layers_sizes[self.nb_layers - 1]
 
+        output = self.nb_layers - 1
+        length = self.layers_sizes[output]
+
+        cost = 0.0
         for i in range(length):
-            cost += math.pow(self.layers[output][i] - output_target[i], 2)
-        return cost
+            p = self.layers[output][i]
+            y = output_target[i]
+            cost += (y * np.log(p) + (1.0 - y) * np.log(1.0 - p))
+
+        return cost * -1.0 / length
 
 
     def apply_changes(self):
@@ -148,8 +149,9 @@ class   MLP():
             self.back_target = np.zeros(self.layers_sizes[layer - 1])
             for i in range(self.layers_sizes[layer]):
                 for j in range(self.layers_sizes[layer - 1]):
-                    self.changes[layer - 1][j][i] -= self.compute_gradient(layer, i, j)
+                    self.changes[layer - 1][j][i] += self.compute_gradient(layer, i, j)
             layer -= 1
+
 
     def gradient_descent(self, diagnosis, input_data):
 
@@ -157,7 +159,7 @@ class   MLP():
 
         self.average_changes(diagnosis)
 
-        return self.compute_cost(diagnosis)
+        return self.compute_loss(diagnosis)
 
 
     def backpropagation(self, df, learning_rate=0.01, max_epoch=1000000):

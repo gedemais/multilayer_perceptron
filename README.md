@@ -2,11 +2,18 @@
 
 <h3> Tasks </h3>
 
-- [ ] Tester la backpropagation avec la fonction d'erreur d'entropie croisee binaire
+- [ ] Implementer et linker les differentes derivees dans le calcul du gradient
 
 - [ ] Data-visu le bruteforce des hypers parametres pour la phase d'apprentissage
 
+- [ ] Exporter les poids une fois l'entrainement fini
+
+- [ ] Implementer le script de prediction
+
+
 <h3>Done</h3>
+
+- [x] Tester la backpropagation avec la fonction d'erreur d'entropie croisee binaire
 
 - [x] Implementer la backpropagation dans la classe MLP
 
