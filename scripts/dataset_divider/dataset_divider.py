@@ -5,18 +5,19 @@ from sys import argv, stderr
 usage = "Usage : python3 dataset_divider.py dataset_path.csv\n"
 
 
-def divide(df):
+def divide(df, training_part=0.8):
     """
     This function splits the dataset in two groups by diagnosis.
     Then it builds a training and an evaluation datasets from theses groups,
     with a ratio of 80% data reserved for training, and 20% remaining for test.
+    Parameters:
+    - df : pandas DataFrame, containing raw dataset to normalize and split.
+    - training_part : float (0-1), portion of data to be used for training.
     """
     # Separate rows by diagnosis
     group = df.groupby(df['Diagnosis'])
     benins = group.get_group('B')
     malins = group.get_group('M')
-
-    training_part = 0.8 # Porportion of rows reserved for training
 
     # Compute the number of rows to reserve according to training_part
     b_training_features = int(len(benins) * training_part)
@@ -35,6 +36,9 @@ def divide(df):
 
 
 def normalize(df):
+    """
+        Normalization of input data.
+    """
     result = df.copy()
     for feature_name in df.columns:
 
@@ -48,6 +52,11 @@ def normalize(df):
 
 
 def main(argv):
+    """
+        This script splits the dataset in two parts for training and evaluation.
+        It then exports each normalized parts in data/ folder.
+    """
+
     # Parameters check
     if len(argv) != 2:
         stderr.write("Invalid number of arguments.\n" + usage)
@@ -65,8 +74,8 @@ def main(argv):
     df_training, df_evaluation = divide(df)
 
     # Exports training and evaluation datasets to csv
-    df_training.to_csv('training_dataset.csv')
-    df_evaluation.to_csv('evaluation_dataset.csv')
+    df_training.to_csv('data/training_dataset.csv')
+    df_evaluation.to_csv('data/evaluation_dataset.csv')
 
 
 if __name__ == "__main__":

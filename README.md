@@ -2,6 +2,8 @@
 
 <h3> Tasks </h3>
 
+- [ ] Revoir la backpropagation
+
 - [ ] Exporter une seed correcte pour le modele 30/8(s)/4(s)/2
 
 - [ ] Exporter les poids une fois l'entrainement fini

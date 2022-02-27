@@ -1,0 +1,11 @@
+[
+{"loss": 160, "precision": 0.8956521739130435, "errors": 12},
+{"loss": 150, "precision": 0.9043478260869565, "errors": 11},
+{"loss": 140, "precision": 0.9130434782608695, "errors": 10},
+{"loss": 130, "precision": 0.9130434782608695, "errors": 10},
+{"loss": 120, "precision": 0.9217391304347826, "errors": 9},
+{"loss": 110, "precision": 0.9304347826086956, "errors": 8},
+{"loss": 100, "precision": 0.9391304347826087, "errors": 7},
+{"loss": 90, "precision": 0.93043478260869560, "errors": 8},
+{"loss": 80, "precision": 0.9217391304347826, "errors": 9}
+]

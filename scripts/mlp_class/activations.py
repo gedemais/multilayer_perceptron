@@ -10,7 +10,7 @@ def dsoftmax(inputs):
     for i in range(inputs.shape[0]):
         xsum = np.sum(np.exp(inputs[i]))
         sft[i, ...] = np.exp(inputs[i, ...]) / xsum
-    return sft * (1. - sft)
+    return sft
 
 
 def ReLU(x):
